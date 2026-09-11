@@ -107,11 +107,92 @@
             { id: 'g3', contest: 'Concurso de Declamación', url: 'https://placehold.co/600x400/F7931E/white?text=Declamacion+1', desc: 'Participante del Templo Fénix en el escenario.' },
         ];
 
+        function SocialFeedView() {
+            return (
+                <div className="flex flex-col lg:flex-row gap-8 fade-in">
+                    <div className="w-full lg:w-1/2 flex flex-col gap-6">
+                        <h2 className="font-maven font-bold text-2xl text-gray-800 flex items-center gap-2">
+                            <span className="text-blue-600">
+                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" /></svg>
+                            </span> 
+                            Transmisión de Facebook
+                        </h2>
+                        <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden flex flex-col justify-center p-4 bg-gray-50 min-h-[500px] items-center">
+                             {/* NOTA PARA EL DESARROLLADOR: Reemplaza "mineduperu" en el enlace de abajo por el usuario de facebook de Ágora Education */}
+                             <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmineduperu&tabs=timeline&width=400&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="100%" height="500" style={{border:"none", overflow:"hidden", maxWidth: "400px"}} scrolling="no" frameBorder="0" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                        </div>
+                        <p className="text-sm text-gray-500 text-center">*La transmisión se actualiza en tiempo real durante el evento.</p>
+                    </div>
+                    
+                    <div className="w-full lg:w-1/2 flex flex-col gap-6">
+                         <h2 className="font-maven font-bold text-2xl text-gray-800 flex items-center gap-2">
+                            <span className="text-pink-600">
+                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" /></svg>
+                            </span>
+                            Instagram del Evento
+                        </h2>
+                        <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden flex flex-col justify-center items-center p-8 text-center min-h-[220px]">
+                            <span className="text-6xl mb-4">📸</span>
+                            <h3 className="font-maven font-bold text-xl text-gray-800 mb-2">¡Sigue el Hashtag Oficial!</h3>
+                            <p className="text-gray-500 mb-6">Etiquétanos en tus fotos usando <br/><strong className="text-pink-600">#DesafioTemplosAgora</strong></p>
+                            <a href="https://www.instagram.com/explore/tags/desafiotemplosagora/" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white font-bold py-3 px-6 rounded-full hover:scale-105 transition-transform shadow-md">
+                                Ver en Instagram
+                            </a>
+                        </div>
+
+                        <h2 className="font-maven font-bold text-2xl text-gray-800 flex items-center gap-2 mt-2">
+                            <span className="text-black">
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 448 512" aria-hidden="true"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg>
+                            </span>
+                            TikTok Ágora
+                        </h2>
+                        <div className="bg-black rounded-3xl shadow-lg border border-gray-800 overflow-hidden flex flex-col justify-center items-center p-8 text-center text-white min-h-[180px]">
+                            <h3 className="font-maven font-bold text-xl mb-2">Concursos de TikTok</h3>
+                            <p className="text-gray-300 mb-4 text-sm">Apoya las coreografías y trends de tu templo favorito.</p>
+                            <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" className="bg-white text-black font-black py-2 px-6 rounded-full hover:bg-gray-200 transition-colors shadow-md text-sm">
+                                @AgoraEducation
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
+        function Footer() {
+            return (
+                <footer className="bg-white border-t-4 border-agora-verde mt-12 py-8 mt-auto">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div className="text-center md:text-left flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-agora-verde text-white font-bold flex items-center justify-center shrink-0 shadow-inner">A</div>
+                            <div>
+                                <h3 className="font-maven font-black text-xl text-gray-800 leading-tight">Ágora Education</h3>
+                                <p className="text-gray-500 font-bold text-sm">Formando líderes para el futuro</p>
+                            </div>
+                        </div>
+                        <div className="flex flex-col items-center md:items-end gap-2">
+                            <span className="font-bold text-gray-600 text-sm">Síguenos en nuestras redes:</span>
+                            <div className="flex gap-4">
+                                <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 hover:-translate-y-1 transition-transform shadow-md">
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" /></svg>
+                                </a>
+                                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md">
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" /></svg>
+                                </a>
+                                <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md">
+                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 448 512" aria-hidden="true"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
         function App() {
             const [temples, setTemples] = useState(INITIAL_TEMPLES);
             const [feed, setFeed] = useState([]);
             const [isAdmin, setIsAdmin] = useState(false);
-            const [activeTab, setActiveTab] = useState('leaderboard'); // 'leaderboard' | 'gallery'
+            const [activeTab, setActiveTab] = useState('leaderboard');
 
             const sortedTemples = useMemo(() => {
                 return [...temples].sort((a, b) => b.points - a.points);
@@ -131,7 +212,6 @@
 
             return (
                 <div className="min-h-screen flex flex-col font-delius text-gray-800 pb-12">
-                    {/* Header Principal */}
                     <header className="bg-white shadow-md border-b-4 border-agora-verde sticky top-0 z-50">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                             <div className="flex items-center gap-4 w-full sm:w-auto">
@@ -154,28 +234,32 @@
                             </button>
                         </div>
 
-                        {/* Sistema de Pestañas (Tabs) */}
                         <div className="bg-gray-50 border-t border-gray-200">
-                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center sm:justify-start gap-4">
+                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-start gap-4 overflow-x-auto no-scrollbar">
                                 <button 
                                     onClick={() => setActiveTab('leaderboard')}
-                                    className={`py-3 px-4 font-maven font-bold text-lg border-b-4 transition-colors ${activeTab === 'leaderboard' ? 'border-agora-naranja text-agora-naranja' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
+                                    className={`py-3 px-4 font-maven font-bold text-lg border-b-4 transition-colors whitespace-nowrap ${activeTab === 'leaderboard' ? 'border-agora-naranja text-agora-naranja' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
                                 >
                                     🏆 Marcador en Vivo
                                 </button>
                                 <button 
                                     onClick={() => setActiveTab('gallery')}
-                                    className={`py-3 px-4 font-maven font-bold text-lg border-b-4 transition-colors flex items-center gap-2 ${activeTab === 'gallery' ? 'border-agora-verde text-agora-verde' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
+                                    className={`py-3 px-4 font-maven font-bold text-lg border-b-4 transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'gallery' ? 'border-agora-verde text-agora-verde' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
                                 >
-                                    📸 Galería & Aliento <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full animate-bounce">Nuevo</span>
+                                    📸 Galería & Aliento <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full animate-bounce hidden sm:inline-block">Nuevo</span>
+                                </button>
+                                <button 
+                                    onClick={() => setActiveTab('social')}
+                                    className={`py-3 px-4 font-maven font-bold text-lg border-b-4 transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'social' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
+                                >
+                                    📡 Redes Sociales <span className="bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded-full animate-pulse uppercase tracking-wider hidden sm:inline-block">En Vivo</span>
                                 </button>
                             </div>
                         </div>
                     </header>
 
-                    {/* Contenido Principal */}
-                    <main className="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 fade-in">
-                        {activeTab === 'leaderboard' ? (
+                    <main className="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 fade-in flex flex-col">
+                        {activeTab === 'leaderboard' && (
                             <LeaderboardView 
                                 sortedTemples={sortedTemples} 
                                 isAdmin={isAdmin} 
@@ -184,10 +268,16 @@
                                 onAddPoints={handleAddPoints} 
                                 feed={feed} 
                             />
-                        ) : (
+                        )}
+                        {activeTab === 'gallery' && (
                             <GalleryAndCheersView temples={temples} contests={CONTESTS} />
                         )}
+                        {activeTab === 'social' && (
+                            <SocialFeedView />
+                        )}
                     </main>
+
+                    <Footer />
                 </div>
             );
         }
@@ -195,7 +285,6 @@
         function LeaderboardView({ sortedTemples, isAdmin, temples, contests, onAddPoints, feed }) {
             return (
                 <div className="flex flex-col lg:flex-row gap-8">
-                    {/* Leaderboard Section */}
                     <div className="w-full lg:w-2/3 flex flex-col gap-6">
                         <div className="flex justify-between items-end">
                             <h2 className="font-maven font-bold text-3xl text-gray-800">Posiciones Actuales</h2>
@@ -212,7 +301,6 @@
                         </div>
                     </div>
 
-                    {/* Sidebar: Feed & Admin */}
                     <div className="w-full lg:w-1/3 flex flex-col gap-6">
                         {isAdmin && (
                             <AdminPanel temples={temples} contests={contests} onAddPoints={onAddPoints} />
@@ -372,13 +460,11 @@
         function GalleryAndCheersView({ temples, contests }) {
             const [selectedContest, setSelectedContest] = useState(contests[0]);
             
-            // Filtrar datos según concurso seleccionado
             const contestCompetitors = MOCK_COMPETITORS.filter(c => c.contest === selectedContest);
             const contestGallery = MOCK_GALLERY.filter(g => g.contest === selectedContest);
 
             return (
                 <div className="flex flex-col gap-8 fade-in">
-                    {/* Filtro Principal */}
                     <div className="bg-white rounded-2xl shadow-md p-4 flex flex-col sm:flex-row items-center justify-between gap-4 border border-gray-100">
                         <div className="flex items-center gap-3 w-full sm:w-auto">
                             <span className="text-3xl bg-gray-100 p-2 rounded-xl">🎯</span>
@@ -396,7 +482,6 @@
                         </select>
                     </div>
 
-                    {/* Galería Fotográfica */}
                     <div className="bg-white rounded-3xl shadow-lg p-6 border border-gray-100">
                         <h3 className="font-maven font-black text-2xl text-gray-800 mb-4 flex items-center gap-2">
                             <span>📸</span> Fotos del Evento
@@ -420,7 +505,6 @@
                         )}
                     </div>
 
-                    {/* Lista de Competidores y Muro de Aliento */}
                     <div>
                         <h3 className="font-maven font-black text-2xl text-gray-800 mb-4 flex items-center gap-2 px-2">
                             <span>📣</span> Muro de Aliento y Competidores
@@ -467,12 +551,10 @@
 
                 setCheers([newCheer, ...cheers]);
                 setNewCheerMessage('');
-                // Mantener el nombre para que el padre comente más rápido si quiere
             };
 
             return (
                 <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden flex flex-col h-[550px]">
-                    {/* Cabecera Competidor */}
                     <div className="p-5 flex gap-4 items-center border-b border-gray-100 relative overflow-hidden">
                         <div className={`absolute top-0 right-0 w-24 h-24 ${templeData.colorClass} opacity-10 rounded-bl-full`}></div>
                         
@@ -488,7 +570,6 @@
                         </div>
                     </div>
 
-                    {/* Muro de Comentarios */}
                     <div className="flex-grow p-4 overflow-y-auto bg-gray-50 no-scrollbar flex flex-col gap-3">
                         {cheers.length === 0 ? (
                             <div className="flex-grow flex items-center justify-center text-center p-4">
@@ -507,7 +588,6 @@
                         )}
                     </div>
 
-                    {/* Formulario para agregar aliento */}
                     <div className="p-4 bg-white border-t border-gray-100">
                         <form onSubmit={handleAddCheer} className="flex flex-col gap-2">
                             <input 
@@ -515,26 +595,20 @@
                                 placeholder="Tu nombre (Ej. Papá de Mateo)" 
                                 value={newCheerName}
                                 onChange={(e) => setNewCheerName(e.target.value)}
-                                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-agora-verde"
-                                maxLength={30}
+                                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agora-verde transition-all"
+                                required
                             />
-                            <div className="flex gap-2">
-                                <input 
-                                    type="text" 
-                                    placeholder={`¡Anima a ${competitor.name.split(' ')[0]}!`} 
-                                    value={newCheerMessage}
-                                    onChange={(e) => setNewCheerMessage(e.target.value)}
-                                    className="flex-grow bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-agora-verde"
-                                    maxLength={100}
-                                />
-                                <button 
-                                    type="submit"
-                                    disabled={!newCheerName.trim() || !newCheerMessage.trim()}
-                                    className="bg-agora-verde text-white rounded-lg px-4 py-2 font-bold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shrink-0"
-                                >
-                                    Enviar
-                                </button>
-                            </div>
+                            <textarea
+                                placeholder="¡Deja un mensaje de aliento!"
+                                value={newCheerMessage}
+                                onChange={(e) => setNewCheerMessage(e.target.value)}
+                                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agora-verde resize-none transition-all"
+                                rows="2"
+                                required
+                            ></textarea>
+                            <button type="submit" className="w-full bg-agora-verde hover:bg-agora-olivo text-white font-bold py-2 rounded-lg transition-colors shadow-sm text-sm">
+                                Enviar Aliento 📣
+                            </button>
                         </form>
                     </div>
                 </div>
