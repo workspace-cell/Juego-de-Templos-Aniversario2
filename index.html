@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafío de los Templos - Ágora Education</title>
+    
+    <!-- Carga de React y ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración de Tailwind y Fuentes -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'agora-verde': '#8DAA25',
+                        'agora-olivo': '#929449',
+                        'agora-naranja': '#F7931E',
+                        'templo-dragon': '#15803d',
+                        'templo-pegaso': '#3b82f6',
+                        'templo-grifo': '#9333ea',
+                        'templo-fenix': '#ea580c',
+                    },
+                    fontFamily: {
+                        maven: ['"Maven Pro"', 'sans-serif'],
+                        delius: ['"Delius"', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Delius&family=Maven+Pro:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .card-enter { animation: slideIn 0.5s ease-out forwards; }
+        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useRef } = React;
+
+        const INITIAL_TEMPLES = [
+            { id: 'dragon', name: 'Dragón', colorClass: 'bg-templo-dragon', textClass: 'text-templo-dragon', points: 0, logo: '6 (2).png' },
+            { id: 'pegaso', name: 'Pegaso', colorClass: 'bg-templo-pegaso', textClass: 'text-templo-pegaso', points: 0, logo: '8 (1).png' },
+            { id: 'grifo', name: 'Grifo', colorClass: 'bg-templo-grifo', textClass: 'text-templo-grifo', points: 0, logo: '4 (2).png' },
+            { id: 'fenix', name: 'Fénix', colorClass: 'bg-templo-fenix', textClass: 'text-templo-fenix', points: 0, logo: '2 (2).png' },
+        ];
+
+        const CONTESTS = [
+            "Concurso de Dibujo y Pintura", "Concurso de Declamación", "Concurso de Talentos",
+            "Olimpiadas del Saber", "Concurso de Barras", "Concurso de Matemática",
+            "Concurso de Comunicación", "Cálculo Mental", "Concurso de Ortografía",
+            "Concurso de Ajedrez", "Comprensión Lectora", "Concurso de Oratoria",
+            "Concurso de Tik Tok", "Concurso de Historietas", "Concurso de Antorchas",
+            "Gincana Deportiva", "Fútbol de Padres", "Vóley de Padres"
+        ];
+
+        // Datos simulados para competidores
+        const MOCK_COMPETITORS = [
+            { id: 'c1', name: 'Mateo Rojas', grade: '3er Grado Primaria', temple: 'dragon', contest: 'Concurso de Dibujo y Pintura', photo: 'https://placehold.co/150x150/15803d/white?text=MR' },
+            { id: 'c2', name: 'Lucía Mendoza', grade: '5to Grado Primaria', temple: 'pegaso', contest: 'Concurso de Dibujo y Pintura', photo: 'https://placehold.co/150x150/3b82f6/white?text=LM' },
+            { id: 'c3', name: 'Valentina Cruz', grade: '1er Año Sec.', temple: 'grifo', contest: 'Concurso de Declamación', photo: 'https://placehold.co/150x150/9333ea/white?text=VC' },
+            { id: 'c4', name: 'Joaquín Pérez', grade: '4to Año Sec.', temple: 'fenix', contest: 'Concurso de Declamación', photo: 'https://placehold.co/150x150/ea580c/white?text=JP' },
+            { id: 'c5', name: 'Camila Torres', grade: '2do Grado Primaria', temple: 'dragon', contest: 'Olimpiadas del Saber', photo: 'https://placehold.co/150x150/15803d/white?text=CT' },
+            { id: 'c6', name: 'Diego Quispe', grade: '6to Grado Primaria', temple: 'fenix', contest: 'Olimpiadas del Saber', photo: 'https://placehold.co/150x150/ea580c/white?text=DQ' },
+        ];
+
+        // Datos simulados de comentarios (Muro de aliento)
+        const INITIAL_CHEERS = [
+            { id: 'ch1', competitorId: 'c1', author: 'Mamá de Mateo', message: '¡Vamos hijo, dibuja hermoso! Orgullosa de ti.', time: 'Hace 5 min' },
+            { id: 'ch2', competitorId: 'c2', author: 'Familia Mendoza', message: '¡Fuerza Pegaso! Tú puedes Lucía.', time: 'Hace 12 min' },
+            { id: 'ch3', competitorId: 'c3', author: 'Papá', message: 'Que tu voz resuene fuerte. ¡Vamos Grifo!', time: 'Hace 2 min' },
+        ];
+
+        // Fotos simuladas de galería
+        const MOCK_GALLERY = [
+            { id: 'g1', contest: 'Concurso de Dibujo y Pintura', url: 'https://placehold.co/600x400/8DAA25/white?text=Exposicion+Dibujo+1', desc: 'Iniciando el concurso en las aulas.' },
+            { id: 'g2', contest: 'Concurso de Dibujo y Pintura', url: 'https://placehold.co/600x400/929449/white?text=Exposicion+Dibujo+2', desc: 'Gran concentración de los estudiantes.' },
+            { id: 'g3', contest: 'Concurso de Declamación', url: 'https://placehold.co/600x400/F7931E/white?text=Declamacion+1', desc: 'Participante del Templo Fénix en el escenario.' },
+        ];
+
+        function App() {
+            const [temples, setTemples] = useState(INITIAL_TEMPLES);
+            const [feed, setFeed] = useState([]);
+            const [isAdmin, setIsAdmin] = useState(false);
+            const [activeTab, setActiveTab] = useState('leaderboard'); // 'leaderboard' | 'gallery'
+
+            const sortedTemples = useMemo(() => {
+                return [...temples].sort((a, b) => b.points - a.points);
+            }, [temples]);
+
+            const handleAddPoints = (templeId, points, contestName) => {
+                setTemples(prev => prev.map(t => 
+                    t.id === templeId ? { ...t, points: t.points + points } : t
+                ));
+                const templeName = temples.find(t => t.id === templeId)?.name;
+                const newFeedItem = {
+                    id: Date.now(), templeId, templeName, points, contestName,
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                };
+                setFeed(prev => [newFeedItem, ...prev].slice(0, 15));
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col font-delius text-gray-800 pb-12">
+                    {/* Header Principal */}
+                    <header className="bg-white shadow-md border-b-4 border-agora-verde sticky top-0 z-50">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div className="flex items-center gap-4 w-full sm:w-auto">
+                                <div className="w-12 h-12 rounded-full border-4 border-agora-naranja flex items-center justify-center bg-agora-verde text-white font-bold text-xl shrink-0 shadow-inner">
+                                    A
+                                </div>
+                                <div>
+                                    <h1 className="font-maven font-black text-2xl md:text-3xl text-gray-900 leading-tight">
+                                        DESAFÍO DE LOS TEMPLOS
+                                    </h1>
+                                    <p className="text-agora-olivo text-sm md:text-base font-bold">II Aniversario Ágora Education</p>
+                                </div>
+                            </div>
+                            
+                            <button 
+                                onClick={() => setIsAdmin(!isAdmin)}
+                                className={`px-4 py-2 rounded-full font-bold transition-colors shadow-sm text-sm shrink-0 ${isAdmin ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                            >
+                                {isAdmin ? 'Cerrar Admin' : '⚙️ Admin'}
+                            </button>
+                        </div>
+
+                        {/* Sistema de Pestañas (Tabs) */}
+                        <div className="bg-gray-50 border-t border-gray-200">
+                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center sm:justify-start gap-4">
+                                <button 
+                                    onClick={() => setActiveTab('leaderboard')}
+                                    className={`py-3 px-4 font-maven font-bold text-lg border-b-4 transition-colors ${activeTab === 'leaderboard' ? 'border-agora-naranja text-agora-naranja' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
+                                >
+                                    🏆 Marcador en Vivo
+                                </button>
+                                <button 
+                                    onClick={() => setActiveTab('gallery')}
+                                    className={`py-3 px-4 font-maven font-bold text-lg border-b-4 transition-colors flex items-center gap-2 ${activeTab === 'gallery' ? 'border-agora-verde text-agora-verde' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
+                                >
+                                    📸 Galería & Aliento <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full animate-bounce">Nuevo</span>
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Contenido Principal */}
+                    <main className="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 fade-in">
+                        {activeTab === 'leaderboard' ? (
+                            <LeaderboardView 
+                                sortedTemples={sortedTemples} 
+                                isAdmin={isAdmin} 
+                                temples={temples} 
+                                contests={CONTESTS} 
+                                onAddPoints={handleAddPoints} 
+                                feed={feed} 
+                            />
+                        ) : (
+                            <GalleryAndCheersView temples={temples} contests={CONTESTS} />
+                        )}
+                    </main>
+                </div>
+            );
+        }
+
+        function LeaderboardView({ sortedTemples, isAdmin, temples, contests, onAddPoints, feed }) {
+            return (
+                <div className="flex flex-col lg:flex-row gap-8">
+                    {/* Leaderboard Section */}
+                    <div className="w-full lg:w-2/3 flex flex-col gap-6">
+                        <div className="flex justify-between items-end">
+                            <h2 className="font-maven font-bold text-3xl text-gray-800">Posiciones Actuales</h2>
+                            <div className="flex items-center gap-2 text-agora-verde animate-pulse bg-green-50 px-3 py-1 rounded-full border border-green-200">
+                                <span className="w-3 h-3 bg-agora-verde rounded-full"></span>
+                                <span className="font-bold text-sm">EN VIVO</span>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                            {sortedTemples.map((temple, index) => (
+                                <TempleCard key={temple.id} temple={temple} rank={index + 1} />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Sidebar: Feed & Admin */}
+                    <div className="w-full lg:w-1/3 flex flex-col gap-6">
+                        {isAdmin && (
+                            <AdminPanel temples={temples} contests={contests} onAddPoints={onAddPoints} />
+                        )}
+                        <ActivityFeed feed={feed} temples={temples} />
+                    </div>
+                </div>
+            );
+        }
+
+        function TempleCard({ temple, rank }) {
+            return (
+                <div className={`relative bg-white rounded-3xl shadow-xl overflow-hidden border-2 transition-all duration-500 transform hover:-translate-y-1 ${rank === 1 ? 'border-yellow-400 shadow-yellow-200/50' : 'border-transparent'}`}>
+                    <div className={`absolute top-0 left-0 w-16 h-16 rounded-br-3xl flex items-center justify-center font-maven font-black text-2xl z-10 shadow-md ${
+                        rank === 1 ? 'bg-gradient-to-br from-yellow-300 to-yellow-500 text-yellow-900' : 
+                        rank === 2 ? 'bg-gradient-to-br from-gray-200 to-gray-400 text-gray-800' : 
+                        rank === 3 ? 'bg-gradient-to-br from-amber-500 to-amber-700 text-white' : 
+                        'bg-gray-100 text-gray-500'
+                    }`}>
+                        #{rank}
+                    </div>
+
+                    <div className="p-6 flex items-center gap-4 sm:gap-6 pt-8">
+                        <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center p-2 bg-gray-50 shadow-inner shrink-0 relative overflow-hidden`}>
+                            <img 
+                                src={temple.logo} 
+                                alt={`Logo ${temple.name}`}
+                                className="w-full h-full object-contain relative z-10"
+                                onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                            />
+                            <div className={`hidden absolute inset-0 w-full h-full ${temple.colorClass} opacity-20 items-center justify-center text-4xl font-black font-maven rounded-2xl`}>
+                                {temple.name.charAt(0)}
+                            </div>
+                        </div>
+
+                        <div className="flex-grow text-right">
+                            <h3 className={`font-maven font-bold text-lg sm:text-xl uppercase tracking-wider opacity-80 ${temple.textClass}`}>Templo</h3>
+                            <h4 className={`font-maven font-black text-2xl sm:text-3xl leading-none mb-2 ${temple.textClass}`}>{temple.name}</h4>
+                            <div className="flex flex-col items-end">
+                                <span className="font-maven font-black text-5xl text-gray-800 transition-all duration-1000">{temple.points}</span>
+                                <span className="text-gray-500 font-bold -mt-1 text-xs sm:text-sm uppercase tracking-widest">Puntos</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={`h-3 w-full ${temple.colorClass}`}></div>
+                </div>
+            );
+        }
+
+        function AdminPanel({ temples, contests, onAddPoints }) {
+            const [selectedTemple, setSelectedTemple] = useState(temples[0].id);
+            const [selectedContest, setSelectedContest] = useState(contests[0]);
+            const [points, setPoints] = useState(100);
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                onAddPoints(selectedTemple, points, selectedContest);
+            };
+
+            return (
+                <div className="bg-white rounded-3xl shadow-xl p-6 border-2 border-agora-naranja/30 card-enter relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-agora-naranja opacity-5 rounded-bl-full -z-10"></div>
+                    <div className="flex items-center gap-2 mb-4">
+                        <span className="text-2xl">⚙️</span>
+                        <h2 className="font-maven font-bold text-xl text-gray-800">Panel de Juez</h2>
+                    </div>
+                    
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4 font-maven">
+                        <div>
+                            <label className="block text-sm font-bold text-gray-600 mb-1">Competencia</label>
+                            <select value={selectedContest} onChange={(e) => setSelectedContest(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-agora-naranja font-bold text-gray-700">
+                                {contests.map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-bold text-gray-600 mb-1">Templo Ganador</label>
+                            <div className="grid grid-cols-2 gap-2">
+                                {temples.map(t => (
+                                    <button
+                                        key={t.id} type="button" onClick={() => setSelectedTemple(t.id)}
+                                        className={`px-3 py-2 rounded-lg border-2 text-sm font-bold transition-all ${
+                                            selectedTemple === t.id ? `${t.colorClass} text-white border-transparent shadow-md transform scale-105` : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'
+                                        }`}
+                                    >
+                                        {t.name}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-bold text-gray-600 mb-1">Puntaje Oficial</label>
+                            <div className="flex gap-2">
+                                {[100, 70, 50].map(val => (
+                                    <button
+                                        key={val} type="button" onClick={() => setPoints(val)}
+                                        className={`flex-1 py-2 rounded-lg border-2 font-black transition-all text-lg ${
+                                            points === val ? 'bg-agora-olivo text-white border-agora-olivo shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                                        }`}
+                                    >
+                                        +{val}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <button type="submit" className="w-full bg-gradient-to-r from-agora-naranja to-orange-500 text-white font-black text-lg py-3 rounded-xl shadow-lg hover:shadow-orange-500/50 hover:-translate-y-0.5 transition-all mt-2">
+                            REGISTRAR PUNTAJE
+                        </button>
+                    </form>
+                </div>
+            );
+        }
+
+        function ActivityFeed({ feed, temples }) {
+            return (
+                <div className="bg-white rounded-3xl shadow-lg p-6 flex flex-col h-[500px] border border-gray-100">
+                    <div className="flex items-center gap-2 mb-4 shrink-0 border-b pb-4">
+                        <span className="text-2xl">⚡</span>
+                        <h2 className="font-maven font-bold text-xl text-gray-800">Últimos Movimientos</h2>
+                    </div>
+
+                    {feed.length === 0 ? (
+                        <div className="flex-grow flex flex-col items-center justify-center text-center text-gray-400 p-4">
+                            <span className="text-4xl mb-2 opacity-50">🏆</span>
+                            <p className="font-bold">Aún no hay puntajes registrados.</p>
+                            <p className="text-sm">¡Que comience el desafío!</p>
+                        </div>
+                    ) : (
+                        <div className="flex-grow overflow-y-auto no-scrollbar flex flex-col gap-3 pr-2">
+                            {feed.map((item) => {
+                                const temple = temples.find(t => t.id === item.templeId);
+                                return (
+                                    <div key={item.id} className="card-enter bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow">
+                                        <div className={`shrink-0 w-14 h-14 rounded-full flex items-center justify-center text-white font-black font-maven text-lg shadow-inner ${temple.colorClass}`}>
+                                            +{item.points}
+                                        </div>
+                                        <div className="flex-grow">
+                                            <div className="flex justify-between items-center mb-1">
+                                                <span className={`font-black text-sm uppercase tracking-wider ${temple.textClass}`}>Templo {item.templeName}</span>
+                                                <span className="text-xs text-gray-400 font-bold">{item.time}</span>
+                                            </div>
+                                            <p className="text-gray-700 leading-tight text-sm">
+                                                Obtuvo puntaje en <span className="font-bold text-gray-900">{item.contestName}</span>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function GalleryAndCheersView({ temples, contests }) {
+            const [selectedContest, setSelectedContest] = useState(contests[0]);
+            
+            // Filtrar datos según concurso seleccionado
+            const contestCompetitors = MOCK_COMPETITORS.filter(c => c.contest === selectedContest);
+            const contestGallery = MOCK_GALLERY.filter(g => g.contest === selectedContest);
+
+            return (
+                <div className="flex flex-col gap-8 fade-in">
+                    {/* Filtro Principal */}
+                    <div className="bg-white rounded-2xl shadow-md p-4 flex flex-col sm:flex-row items-center justify-between gap-4 border border-gray-100">
+                        <div className="flex items-center gap-3 w-full sm:w-auto">
+                            <span className="text-3xl bg-gray-100 p-2 rounded-xl">🎯</span>
+                            <div>
+                                <h2 className="font-maven font-bold text-xl text-gray-800">Selecciona una Competencia</h2>
+                                <p className="text-gray-500 text-sm">Mira fotos en vivo y anima a los participantes</p>
+                            </div>
+                        </div>
+                        <select 
+                            value={selectedContest}
+                            onChange={(e) => setSelectedContest(e.target.value)}
+                            className="w-full sm:w-80 bg-gray-50 border-2 border-agora-verde/30 rounded-xl px-4 py-3 font-maven font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-agora-verde shadow-inner text-lg"
+                        >
+                            {contests.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                    </div>
+
+                    {/* Galería Fotográfica */}
+                    <div className="bg-white rounded-3xl shadow-lg p-6 border border-gray-100">
+                        <h3 className="font-maven font-black text-2xl text-gray-800 mb-4 flex items-center gap-2">
+                            <span>📸</span> Fotos del Evento
+                        </h3>
+                        {contestGallery.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {contestGallery.map(img => (
+                                    <div key={img.id} className="rounded-2xl overflow-hidden shadow-md group relative">
+                                        <img src={img.url} alt="Galería" className="w-full h-48 object-cover transform transition-transform duration-500 group-hover:scale-110" />
+                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 translate-y-2 group-hover:translate-y-0 transition-transform">
+                                            <p className="text-white text-sm font-bold">{img.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="bg-gray-50 rounded-2xl p-8 text-center border-2 border-dashed border-gray-200">
+                                <span className="text-4xl opacity-50 mb-2 block">📷</span>
+                                <p className="text-gray-500 font-bold">Las fotos de esta competencia se publicarán pronto.</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Lista de Competidores y Muro de Aliento */}
+                    <div>
+                        <h3 className="font-maven font-black text-2xl text-gray-800 mb-4 flex items-center gap-2 px-2">
+                            <span>📣</span> Muro de Aliento y Competidores
+                        </h3>
+                        {contestCompetitors.length > 0 ? (
+                            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                                {contestCompetitors.map(competitor => (
+                                    <CompetitorCard 
+                                        key={competitor.id} 
+                                        competitor={competitor} 
+                                        temples={temples} 
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="bg-white rounded-3xl p-12 text-center shadow-md border border-gray-100">
+                                <span className="text-5xl opacity-50 mb-4 block">🏃‍♂️</span>
+                                <h4 className="font-maven font-bold text-xl text-gray-700 mb-2">Aún no se registran competidores</h4>
+                                <p className="text-gray-500">Los participantes aparecerán aquí en breve.</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        function CompetitorCard({ competitor, temples }) {
+            const templeData = temples.find(t => t.id === competitor.temple);
+            const [cheers, setCheers] = useState(INITIAL_CHEERS.filter(c => c.competitorId === competitor.id));
+            const [newCheerName, setNewCheerName] = useState('');
+            const [newCheerMessage, setNewCheerMessage] = useState('');
+
+            const handleAddCheer = (e) => {
+                e.preventDefault();
+                if(!newCheerName.trim() || !newCheerMessage.trim()) return;
+
+                const newCheer = {
+                    id: Date.now().toString(),
+                    competitorId: competitor.id,
+                    author: newCheerName,
+                    message: newCheerMessage,
+                    time: 'Justo ahora'
+                };
+
+                setCheers([newCheer, ...cheers]);
+                setNewCheerMessage('');
+                // Mantener el nombre para que el padre comente más rápido si quiere
+            };
+
+            return (
+                <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden flex flex-col h-[550px]">
+                    {/* Cabecera Competidor */}
+                    <div className="p-5 flex gap-4 items-center border-b border-gray-100 relative overflow-hidden">
+                        <div className={`absolute top-0 right-0 w-24 h-24 ${templeData.colorClass} opacity-10 rounded-bl-full`}></div>
+                        
+                        <div className="w-16 h-16 rounded-full overflow-hidden shadow-md border-2 border-white shrink-0 z-10">
+                            <img src={competitor.photo} alt={competitor.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="z-10 flex-grow">
+                            <h4 className="font-maven font-black text-lg text-gray-900 leading-tight">{competitor.name}</h4>
+                            <p className="text-sm text-gray-500 font-bold">{competitor.grade}</p>
+                            <span className={`inline-block mt-1 px-2 py-0.5 rounded text-xs font-bold font-maven uppercase text-white ${templeData.colorClass}`}>
+                                Templo {templeData.name}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Muro de Comentarios */}
+                    <div className="flex-grow p-4 overflow-y-auto bg-gray-50 no-scrollbar flex flex-col gap-3">
+                        {cheers.length === 0 ? (
+                            <div className="flex-grow flex items-center justify-center text-center p-4">
+                                <p className="text-gray-400 font-bold text-sm">¡Sé el primero en animar a {competitor.name.split(' ')[0]}!</p>
+                            </div>
+                        ) : (
+                            cheers.map(cheer => (
+                                <div key={cheer.id} className="bg-white p-3 rounded-xl shadow-sm border border-gray-100 card-enter">
+                                    <div className="flex justify-between items-baseline mb-1">
+                                        <span className="font-bold text-gray-800 text-sm">{cheer.author}</span>
+                                        <span className="text-[10px] text-gray-400">{cheer.time}</span>
+                                    </div>
+                                    <p className="text-gray-600 text-sm leading-snug">{cheer.message}</p>
+                                </div>
+                            ))
+                        )}
+                    </div>
+
+                    {/* Formulario para agregar aliento */}
+                    <div className="p-4 bg-white border-t border-gray-100">
+                        <form onSubmit={handleAddCheer} className="flex flex-col gap-2">
+                            <input 
+                                type="text" 
+                                placeholder="Tu nombre (Ej. Papá de Mateo)" 
+                                value={newCheerName}
+                                onChange={(e) => setNewCheerName(e.target.value)}
+                                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-agora-verde"
+                                maxLength={30}
+                            />
+                            <div className="flex gap-2">
+                                <input 
+                                    type="text" 
+                                    placeholder={`¡Anima a ${competitor.name.split(' ')[0]}!`} 
+                                    value={newCheerMessage}
+                                    onChange={(e) => setNewCheerMessage(e.target.value)}
+                                    className="flex-grow bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-agora-verde"
+                                    maxLength={100}
+                                />
+                                <button 
+                                    type="submit"
+                                    disabled={!newCheerName.trim() || !newCheerMessage.trim()}
+                                    className="bg-agora-verde text-white rounded-lg px-4 py-2 font-bold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shrink-0"
+                                >
+                                    Enviar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
